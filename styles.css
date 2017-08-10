@@ -1,3 +1,9 @@
+body{
+    background-color:black;
+    width:100%;
+    height:100vh;
+}
+
 #game {
     display:grid;
     justify-content: center;
@@ -11,14 +17,13 @@ height:450px;
 display:grid;
 grid-template-rows: 1fr 1fr 1fr;
 grid-template-columns: 1fr 1fr 1fr;
-border:1px solid black;
+border:1px solidwhite;
 justify-items:stretch;
 align-items:stretch;
 }
 
-
 svg {
     width:100%;
     height:100%;
-    border:1px solid black;
+    border:1px solid white;
 }
