@@ -1,23 +1,46 @@
 $(document).ready(function () {
   var count = 0;
   var playerSymbol;
+$(".selectIcon").click(function(){
+if($(this).attr('id') == "xSelect"){
+   $("#player1").addClass("x");
+  $("#player2").addClass("o");
+  $("#selector").css("z-index","-1");
+
+   $("#player1Score").append('<span id="pXs">0</span>');
+  $("#player2Score").append('<span id="pOs">0</span>')
+}
+
+if($(this).attr('id') == "oSelect"){
+  $("#player1").addClass("o");
+  $("#player2").addClass("x");
+  $("#selector").css("z-index","-1");
+
+  $("#player1Score").append('<span id="pOs">0</span>');
+  $("#player2Score").append('<span id="pXs">0</span>')
+}
+
+});
+
+
+
   $("svg").click(function () {
     if ($(this).hasClass("unplayed")) {
       count += 1;
       $("#moves").html(count);
       $(this).toggleClass("unplayed played")
-      if ($("#player").hasClass("o")) {
-        $("#player").toggleClass("o x")
-        $(this).addClass("o");
-        $(this).html('<circle cx="50%" cy="50%" r="35%" stroke="white" stroke-width="4" fill="none" />');
-      } else if ($("#player").hasClass("x")) {
+      if ($("#player").hasClass("x")) {
         $("#player").toggleClass("o x")
         $(this).addClass("x");
         var small = $(this).width() / (15 / 2);
         var large = $(this).width() / (15 / 13);
         var pathhtml = '<path d="M ' + small + ' ' + small + ' L ' + large + ' ' + large + ' M ' + large + ' ' + small + ' L ' + small + ' ' + large + ' z" stroke="white" stroke-width="4" />';
         $(this).html(pathhtml);
-      }
+      }else if ($("#player").hasClass("o")) {
+        $("#player").toggleClass("o x")
+        $(this).addClass("o");
+        $(this).html('<circle cx="50%" cy="50%" r="35%" stroke="white" stroke-width="4" fill="none" />');
+      }        
       //check to see if either player has won
       if (count >= 5) {
         playerSymbol = this.classList.toString().split(" ")[1].toUpperCase();

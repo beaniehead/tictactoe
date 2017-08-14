@@ -14,13 +14,23 @@
 <body>
     <div id="moves">0</div>
     <div id="scores">Scores<br/>
-        <div id="playerOScore">Player O: <span id="pOs">0</span></div>
-        <div id="playerXScore">Player X: <span id="pXs">0</span></div>
+        <div id="player1Score">Player 1: </div>
+        <div id="player2Score">Player 2: </div>
+      <!--  <div id="playerOScore">Player O: <span id="pOs">0</span></div>
+        <div id="playerXScore">Player X: <span id="pXs">0</span></div> -->
     </div>
-    <div id="player" class="o"></div>
+    <div id="player" class="x"></div>
+    <div id="player1"></div>
+
+    <div id="player2"></div>
     <div class="main">
         <div id="game" class="gameOn">
             <div id="gameBoard">
+                <div id="selector">
+                    <div id="selectorTitle">Player 1 choose</div>
+                    <div id="xSelect" class="selectIcon">X</div>
+                    <div id="oSelect" class="selectIcon">O</div>
+                </div>
                 <svg class="unplayed" id="svg1"></svg>
                 <svg class="unplayed" id="svg2"></svg>
                 <svg class="unplayed" id="svg3"></svg>
