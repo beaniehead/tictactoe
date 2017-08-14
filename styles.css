@@ -22,10 +22,36 @@ grid-template-areas:
  "a1 a2 a3"
  "b1 b2 b3"
  "c1 c2 c3";
-
 border:1px solid white;
 justify-items:stretch;
 align-items:stretch;
+}
+
+#selector{
+grid-area: 1/1/4/4;
+background-color: black;
+z-index:3;
+display:grid;
+grid-template-rows: repeat(2, 1fr);
+grid-template-columns:repeat(4, 1fr);
+grid-template-areas:
+"selectorTitle selectorTitle selectorTitle selectorTitle"
+"borderLeft selectorLeft selectorRight borderRight";
+justify-items:center;
+    font-size:2em;
+}
+
+#selectorTitle {
+    grid-area:selectorTitle;
+    align-self:center;
+}
+
+#xSelect{
+    grid-area:selectorLeft;
+}
+
+#oSelect {
+    grid-area:selectorRight;
 }
 
 svg {
