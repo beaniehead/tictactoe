@@ -1,6 +1,29 @@
 $(document).ready(function () {
   var count = 0;
   var playerSymbol;
+$(".selectIcon").click(function(){
+if($(this).attr('id') == "xSelect"){
+   $("#player1").addClass("x");
+  $("#player2").addClass("o");
+  $("#selector").css("z-index","-1");
+
+   $("#player1Score").append('<span id="pXs">0</span>');
+  $("#player2Score").append('<span id="pOs">0</span>')
+}
+
+if($(this).attr('id') == "oSelect"){
+  $("#player1").addClass("o");
+  $("#player2").addClass("x");
+  $("#selector").css("z-index","-1");
+
+  $("#player1Score").append('<span id="pOs">0</span>');
+  $("#player2Score").append('<span id="pXs">0</span>')
+}
+
+});
+
+
+
   $("svg").click(function () {
     if ($(this).hasClass("unplayed")) {
       count += 1;

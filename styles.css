@@ -46,9 +46,15 @@ justify-items:center;
     align-self:center;
 }
 
+.selectIcon:hover {
+    cursor: pointer;
+}
+
 #xSelect{
     grid-area:selectorLeft;
 }
+
+
 
 #oSelect {
     grid-area:selectorRight;
