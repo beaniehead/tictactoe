@@ -4,11 +4,56 @@ body{
     height:100vh;
     color:white;
 }
+
+#playerIndicator {
+    font-size:1.4em;
+    text-align:center;
+}
+
+.turnIndicator {
+    justify-self:center;
+}
+
+#main {
+    display:grid;
+    grid-template-rows: 100px 100px 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+    "header"
+    "scores"
+    "game";
+    justify-items:center;
+}
+
+#header{
+    grid-area: header;
+}
+
+#scores{
+    visibility: hidden;
+    grid-area:scores;
+    align-self:end;
+    display:grid;
+    justify-items:center;
+    grid-template-rows:1fr 1fr 1fr;
+}
+
+.singlePlayerScore {
+display:grid;
+grid-template-columns:2fr 3fr 1fr 1fr;
+grid-template-areas: 
+"indicator text extra extra"
+}
+
+.playerScoreText{
+    grid-area:text;
+}
+
 #game {
     display:grid;
     justify-content: center;
-    height:80vh;
     align-items:center;
+
 }
 
 #gameBoard {
@@ -50,13 +95,13 @@ justify-items:center;
     cursor: pointer;
 }
 
-#xSelect{
+#XSelect{
     grid-area:selectorLeft;
 }
 
 
 
-#oSelect {
+#OSelect {
     grid-area:selectorRight;
 }
 
