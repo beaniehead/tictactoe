@@ -1,4 +1,5 @@
 //need to change ai for minmax algorithm
+//need to have a pause of something after ai move before the player can place a move. Currently if a human player plays too quickly after an AI player, the win message won't display (but game will still reset)
 
 $(document).ready(function () {
   var count = 0;
