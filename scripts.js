@@ -1,12 +1,12 @@
-//need to change ai for minmax algorithm
-//need to have a pause of something after ai move before the player can place a move. Currently if a human player plays too quickly after an AI player, the win message won't display (but game will still reset)
+//need to complete ai strategy for x in ai games - need to add parameters for making a move if there isn't a blocking or winning move after move three
+//need to then add this strategy to o
+//comment code
+//tidy and combine
 
 $(document).ready(function () {
   var count = 0;
   var lastMove;
   var winner = false;
-  var X;
-  var O;
   var P1;
   var P2;
   //X Path start point
@@ -18,6 +18,26 @@ $(document).ready(function () {
   //SGV O Path HTML
   var pathO = '<circle cx="50%" cy="50%" r="35%" stroke="white" stroke-width="4" fill="none" />';
   var testSquare;
+  var boardState = [];
+  var squares = $("#gameBoard").children("svg");
+  var squareindex;
+  for (i = 0; i < squares.length; i++) {
+    boardState.push(squares[i].classList.value);
+  }
+  var testBoard;
+  var testWinner = false;
+  /*var unavailableX = [];
+  for (i = 0; i < 9; i++) {
+    if (boardState[i].split(" ")[1] == "X") {
+      unavailableX.push(i);
+    }
+  }
+  var unavailableO = [];
+  for (i = 0; i < 9; i++) {
+    if (boardState[i].split(" ")[1] == "O") {
+      unavailableO.push(i);
+    }
+  }*/
   //choosing game type (vs computer or two people)
   $(".gameTypeOption").click(function () {
     if ($(this).attr('id') == "humanGame") {
@@ -46,37 +66,21 @@ $(document).ready(function () {
     if (P1 == "X") {
       $("#turnIndicatorP1").addClass("visible");
       $("#turnIndicatorP2").addClass("invisible");
-    } else {
+    } else if (P1 == "O") {
       $("#turnIndicatorP2").addClass("visible");
       $("#turnIndicatorP1").addClass("invisible");
     }
 
     $("#scores").css("visibility", "visible");
     //playing first AI move if player 1 selects O
-
-    if ($("#game").attr("class") == "ai" && P1 == "O") {
-      count = -1;
-      setTimeout(function () {
-        $("#svg5").html(pathX);
-        $("#svg5").toggleClass("unplayed played");
-        $("#svg5").addClass("X");
-        $("#player").toggleClass("O X");
-        $("#turnIndicatorP1").attr("class", "turnIndicator visible");
-        $("#turnIndicatorP2").attr("class", "turnIndicator invisible");
-        count += 2;
-      }, 2000);
-    }
+    aiFirstMove();
   });
 
   $("svg").click(function () {
-
-    console.log(count);
-    console.log(P1);
-    //check if game is pvp
+    //check if game is pvp;
     if ($("#game").attr("class") == "humans") {
       if ($(this).hasClass("unplayed")) {
         count += 1;
-        $(this).toggleClass("unplayed played");
         $("#player").toggleClass("O X");
         //alternates between O and X. X if clicks is odd, O if even
         //checks if clicks count is odd, and sets symbol to X
@@ -91,6 +95,10 @@ $(document).ready(function () {
           $(".turnIndicator").toggleClass("visible invisible");
         }
         lastMove = this.classList.toString().split(" ")[1];
+        $(this).toggleClass("unplayed played");
+        //update boardState to include new class of clicked square
+        squareindex = $("svg").index($(this));
+        boardState[squareindex] = squares[squareindex].classList.value;
         //check to see if either player has won
         if (count >= 5) {
           wincheck();
@@ -116,24 +124,104 @@ $(document).ready(function () {
           $(this).toggleClass("unplayed played");
           $("#player").toggleClass("O X");
           $(this).addClass("X");
+          //update boardState to include new class of clicked square
+          squareindex = $("svg").index($(this));
+          boardState[squareindex] = squares[squareindex].classList.value;
           $(this).html(pathX);
           $(".turnIndicator").toggleClass("visible invisible");
           if (count >= 5) {
             wincheck();
           }
           setTimeout(function () {
-            for (i = 1; i <= 9; i++) {
-              if (winner === true) {
+            //loop through ai preference list and then place move in first available square
+            if (count < 3) {
+              for (i = 1; i <= 9; i++) {
+                if (winner === true) { //if human player has won, then don't place a move (doesn't make sense with count limit above) ???
+                  return;
+                } else {
+                  testSquare = preferences[i];
+                  if ($(testSquare).hasClass("unplayed")) {
+                    $("#player").toggleClass("O X")
+                    $(testSquare).html(pathO);
+                    $(testSquare).toggleClass("unplayed played")
+                    $(testSquare).addClass("O");
+                    //update boardState to include new class of clicked square
+                    testsquareindex = $("svg").index($(testSquare));
+                    boardState[testsquareindex] = squares[testsquareindex].classList.value;
+                    count += 1;
+                    $(".turnIndicator").toggleClass("visible invisible");
+                    return;
+                  }
+                }
+              }
+            }
+            var available = [];
+            for (i = 0; i < 9; i++) {
+              if (boardState[i] == "unplayed") {
+                available.push(i);
+              }
+            }
+            //checking through each available move and seeing if this results in a win for the ai
+            for (j = 0; j < available.length; j++) {
+              testWinner = false;
+              testBoard = boardState.slice(0);
+              testBoard[available[j]] = "played " + P2;              
+              for (i = 0; i < 3; i++) {
+                if ((testBoard[(3 * i)] == testBoard[(3 * i) + 1] && testBoard[(3 * i) + 1] == testBoard[(3 * i) + 2] && testBoard[(3 * i)] != "unplayed") ||
+                  (testBoard[i] == testBoard[(i + 3)] && testBoard[(i + 3)] == testBoard[(i + 6)] && testBoard[i] != "unplayed")) {
+                  testWinner = true;
+                }
+              }
+              if ((testBoard[0] == testBoard[4] && testBoard[4] == testBoard[8] && testBoard[0] != "unplayed") ||
+                (testBoard[2] == testBoard[4] && testBoard[4] == testBoard[6] && testBoard[2] != "unplayed")) {
+                testWinner = true;
+              }
+              if (testWinner === true) {
+                var blockWin = squares.eq(available[j]).attr("id");
+                $("#player").toggleClass("O X")
+                $("#" + blockWin).html(pathO);
+                $("#" + blockWin).toggleClass("unplayed played")
+                $("#" + blockWin).addClass(P2);
+                //update boardState to include new class of clicked square
+                testsquareindex = $("svg").index($("#" + blockWin));
+                boardState[testsquareindex] = squares[testsquareindex].classList.value;
+                count += 1;
+                $(".turnIndicator").toggleClass("visible invisible");
+                lastMove = P2;
+                if (count >= 5) {
+                  wincheck();
+                }
                 return;
-              } else {
-                testSquare = preferences[i];
-                if ($(testSquare).hasClass("unplayed")) {
+              }
+            }
+            //checking through each available move and seeing if this results in a win for the human player
+            for (j = 0; j < available.length; j++) {
+              if (testWinner === false) {
+                testWinner = false;
+                testBoard = boardState.slice(0);
+                testBoard[available[j]] = "played " + P1;
+                for (i = 0; i < 3; i++) {
+                  if ((testBoard[(3 * i)] == testBoard[(3 * i) + 1] && testBoard[(3 * i) + 1] == testBoard[(3 * i) + 2] && testBoard[(3 * i)] != "unplayed") ||
+                    (testBoard[i] == testBoard[(i + 3)] && testBoard[(i + 3)] == testBoard[(i + 6)] && testBoard[i] != "unplayed")) {
+                    testWinner = true;
+                  }
+                }
+                if ((testBoard[0] == testBoard[4] && testBoard[4] == testBoard[8] && testBoard[0] != "unplayed") ||
+                  (testBoard[2] == testBoard[4] && testBoard[4] == testBoard[6] && testBoard[2] != "unplayed")) {
+                  testWinner = true;
+                }
+                if (testWinner === true) {
+                  var blockWin = squares.eq(available[j]).attr("id");
                   $("#player").toggleClass("O X")
-                  $(testSquare).html(pathO);
-                  $(testSquare).toggleClass("unplayed played")
-                  $(testSquare).addClass("O");
+                  $("#" + blockWin).html(pathO);
+                  $("#" + blockWin).toggleClass("unplayed played")
+                  $("#" + blockWin).addClass(P2);
+                  //update boardState to include new class of clicked square
+                  testsquareindex = $("svg").index($("#" + blockWin));
+                  boardState[testsquareindex] = squares[testsquareindex].classList.value;
                   count += 1;
                   $(".turnIndicator").toggleClass("visible invisible");
+                 lastMove = P2;
                   if (count >= 5) {
                     wincheck();
                   }
@@ -148,8 +236,12 @@ $(document).ready(function () {
           $(this).toggleClass("unplayed played")
           $("#player").toggleClass("O X")
           $(this).addClass("O");
+          //update boardState to include new class of clicked square
+          squareindex = $("svg").index($(this));
+          boardState[squareindex] = squares[squareindex].classList.value;
           $(this).html(pathO);
           $(".turnIndicator").toggleClass("visible invisible");
+          lastMove = this.classList.toString().split(" ")[1];
           if (count >= 5) {
             wincheck();
           }
@@ -164,8 +256,12 @@ $(document).ready(function () {
                   $(testSquare).html(pathX);
                   $(testSquare).toggleClass("unplayed played")
                   $(testSquare).addClass("X");
+                  //update boardState to include new class of clicked square
+                  testsquareindex = $("svg").index($(testSquare));
+                  boardState[testsquareindex] = squares[testsquareindex].classList.value;
                   count += 1;
                   $(".turnIndicator").toggleClass("visible invisible");
+                  lastMove = $(testSquare).classList.toString().split(" ")[1];
                   if (count >= 5) {
                     wincheck();
                   }
@@ -180,28 +276,44 @@ $(document).ready(function () {
     }
   });
 
+  function aiFirstMove() {
+    if ($("#game").attr("class") == "ai" && P1 == "O") {
+      count = -1;
+      setTimeout(function () {
+        $("#svg5").html(pathX);
+        $("#svg5").toggleClass("unplayed played");
+        $("#svg5").addClass("X");
+        //update boardState to include new class of clicked square
+        testsquareindex = $("svg").index($("#svg5"));
+        boardState[testsquareindex] = squares[testsquareindex].classList.value;
+        $("#player").toggleClass("O X");
+        $("#turnIndicatorP1").attr("class", "turnIndicator visible");
+        $("#turnIndicatorP2").attr("class", "turnIndicator invisible");
+        count += 2;
+      }, 2000);
+    }
+  }
+
   //check for a winner
   function wincheck() {
     //check to see if a row has been been complete
-    for (i = 1; i <= 9; i += 3) {
-      if (!$("#svg" + i + ", #svg" + (i + 1) + ", #svg" + (i + 2)).not(".O").length || !$("#svg" + i + ", #svg" + (i + 1) + ", #svg" + (i + 2)).not(".X").length) {
+    for (i = 0; i < 3; i++) {
+      if (boardState[(3 * i)] == boardState[(3 * i) + 1] && boardState[(3 * i) + 1] == boardState[(3 * i) + 2] && boardState[(3 * i)] != "unplayed") {
         winner = true;
         gameOver();
       }
     }
-    //check to see if a column is complete
-    for (i = 1; i <= 3; i++) {
-      if (!$("#svg" + i + ", #svg" + (i + 3) + ", #svg" + (i + 6)).not(".O").length || !$("#svg" + i + ", #svg" + (i + 3) + ", #svg" + (i + 6)).not(".X").length) {
+    for (i = 0; i < 3; i++) {
+      if (boardState[i] == boardState[(i + 3)] && boardState[(i + 3)] == boardState[(i + 6)] && boardState[i] != "unplayed") {
         winner = true;
         gameOver();
       }
     }
-    //check to see if a diagnoal is complete
-    if (!$("#svg1, #svg5, #svg9").not(".O").length || !$("#svg1, #svg5, #svg9").not(".X").length || !$("#svg3, #svg5, #svg7").not(".O").length || !$("#svg3, #svg5, #svg7").not(".X").length) {
+    if ((boardState[0] == boardState[4] && boardState[4] == boardState[8] && boardState[0] != "unplayed") ||
+      (boardState[2] == boardState[4] && boardState[4] == boardState[6] && boardState[2] != "unplayed")) {
       winner = true;
       gameOver();
     }
-
     //check for a draw
     if (count == 9 && winner != true) {
       winner = false;
@@ -225,7 +337,6 @@ $(document).ready(function () {
         scoreToUpdate += 1;
         $("#pP2s").html(scoreToUpdate);
       }
-
       $("#gameEnd").css({
         "display": "none",
         "grid-column": "1 / 4",
@@ -239,7 +350,6 @@ $(document).ready(function () {
         "align-self": "center",
         "text-align": "center"
       });
-
     }
     if (winner === false) {
       $("#gameBoard").prepend("<div id='gameEnd'><h1>Draw! No-one wins.</h1></div>")
@@ -262,9 +372,14 @@ $(document).ready(function () {
       for (i = 1; i <= 9; i++) {
         $("#svg" + i).delay(3500).html("").attr("class", "unplayed");
       }
+      boardState = [];
+      for (i = 0; i < squares.length; i++) {
+        boardState.push(squares[i].classList.value);
+      }
     }, 3100);
 
     function reset() {
+      count = 0;//??? didn't this reset before (or does is reset already above?)
       $("#gameEnd").remove();
       if (P1 == "X") {
         $("#turnIndicatorP1").attr("class", "turnIndicator visible");
@@ -275,26 +390,8 @@ $(document).ready(function () {
       }
       winner = false;
       $("#player").attr("class", "X");
-      console.log(P1);
-      if ($("#game").attr("class") == "ai" && P1 == "O") {
-      count = -1;
-      setTimeout(function () {
-        $("#svg5").html(pathX);
-        $("#svg5").toggleClass("unplayed played");
-        $("#svg5").addClass("X");
-        count += 2;
-        $("#turnIndicatorP1").attr("class", "turnIndicator visible");
-        $("#turnIndicatorP2").attr("class", "turnIndicator invisible");
-      }, 2000);
-    } else { count = 0; }
+      aiFirstMove();
     }
-    
     setTimeout(reset, 3700);
-    
-
-
-
-
   }
-
 });
