@@ -1,5 +1,7 @@
 //comment code
 //tidy and combine
+//need to edit computer/player 2 name in scores depending on if it's an ai or pvp game
+//allow players to enter their names?
 
 $(document).ready(function () {
   var count = 0;
@@ -83,13 +85,13 @@ $(document).ready(function () {
     }
 
     $("#scores").css({
-      "visibility":"visible",
-      "opacity":"1"
+      "visibility": "visible",
+      "opacity": "1"
     });
-    
+
     $("#header").css({
-      "visibility":"hidden",
-      "opacity":"0"
+      "visibility": "hidden",
+      "opacity": "0"
     });
     //playing first AI move if player 1 selects O
     aiFirstMove();
@@ -394,7 +396,11 @@ $(document).ready(function () {
         $("#pP1s").html(scoreToUpdate);
       }
       if (lastMove == P2) {
-        $("#gameBoard").prepend("<div id='gameEnd'><h1>Well done!<br/>Player 2 wins!</h1></div>")
+        if ($("#game").attr("class") == "ai") {
+          $("#gameBoard").prepend("<div id='gameEnd'><h1>The Computer Wins!</h1></div>")
+        } else if ($("#game").attr("class") = "humans") {
+          $("#gameBoard").prepend("<div id='gameEnd'><h1>Well done!<br/>Player 2 wins!</h1></div>")
+        }
         var scoreToUpdate = Number($("#pP2s").html());
         scoreToUpdate += 1;
         $("#pP2s").html(scoreToUpdate);
