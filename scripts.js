@@ -26,14 +26,25 @@ $(document).ready(function () {
 
   var fullHeight = document.body.clientHeight;
   var fullWidth = document.body.clientWidth;
-//size of game board relative to height or width (whichever is smaller)
-var boardRatio = 0.8;
+  //size of game board relative to height or width (whichever is smaller)
+  var boardRatio = 0.92;
 
   if (fullHeight > fullWidth) {
-    $("#main").width(fullWidth * boardRatio + "px");
+    if (fullWidth * boardRatio > 650){
+      $("#main").width("600px");
+    } else{
+      $("#main").width(fullWidth * boardRatio + "px");
+    }
+
   }
   if (fullWidth >= fullHeight) {
-    $("#main").width(fullHeight * boardRatio + "px");
+    if(fullHeight * boardRatio > 650){
+
+      $("#main").width("600px");
+    }else {
+
+      $("#main").width(fullHeight * boardRatio + "px");
+    }
   }
 
 
