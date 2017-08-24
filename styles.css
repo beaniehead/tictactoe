@@ -1,9 +1,10 @@
-body{
+body {
     background-color:#123;
     width:100%;
-    height:auto;
+    height:90vh;
     color:lightgray;
     font-family: 'Roboto Mono', monospace;
+    
 }
 
 #playerIndicator {
@@ -17,12 +18,14 @@ body{
 
 #main {
     display:grid;
-    grid-template-rows: 115px 1fr;
-    grid-template-columns: 1fr;
+    width:600px;
+    grid-template-rows: 115px 1fr 50px;
     grid-template-areas: 
     "header"
     "game";
     justify-items:center;
+    margin-left:auto;
+    margin-right:auto;   
 }
 
 #header{
@@ -30,7 +33,7 @@ body{
     display:grid;
     justify-items:center;
     align-items:start;
-    transition:opacity 500ms linear, visibility 500ms;
+    transition:opacity 200ms linear 200ms, visibility 600ms;
 }
 
 #header h1{
@@ -48,31 +51,33 @@ body{
     justify-items:center;
     grid-template-rows:3fr 2fr 2fr;
     opacity:0;
-    transition:visibility 500ms ,opacity 500ms linear 500ms;
+    transition:visibility 400ms, opacity 200ms linear 400ms;
 }
 #scoresTitle{
-display:grid;
+    display:grid;
 }
+
 #scoresTitle p{
     margin-bottom:5px;
-    font-size: 1.1em;
     margin-top:0;
     justify-self:center;
 }
 
 .singlePlayerScore {
-display:grid;
-grid-template-columns:1fr 3fr 1fr 1fr;
-grid-template-areas: 
-"indicator text extra extra";
-align-items:start;
+    display:grid;
+    grid-template-columns:1fr 3fr 1fr 1fr 1fr;
+    grid-template-areas: 
+    "indicator text extra extra";
+    justify-self:stretch;
+}
+
+#playerIconP1, #playerIconP2 {
+    font-size:0.9em;
 }
 
 .playerScoreText{
     grid-area:text;
 }
-
-
 
 .visible{
     visibility:visible;
@@ -86,24 +91,24 @@ align-items:start;
     display:grid;
     justify-content: center;
     align-items:center;
-
+    width:100%;
 }
 
 #gameBoard {
-background-color:lightgray;
-width:422px;
-height:422px;
-display:grid;
-grid-template-rows: 1fr 1fr 1fr;
-grid-template-columns: 1fr 1fr 1fr;
-grid-template-areas:
- "a1 a2 a3"
- "b1 b2 b3"
- "c1 c2 c3";
-/*border:1px solid white;*/
-grid-gap:7px;
-justify-items:stretch;
-align-items:stretch;
+    background-color:black;
+    width:100%;
+    display:grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas:
+    "a1 a2 a3"
+    "b1 b2 b3"
+    "c1 c2 c3";
+    grid-gap:7px;
+    justify-items:stretch;
+    align-items:stretch;
+    transition:background-color 200ms linear 400ms;
+    margin-top:10px;
 }
 
 #gameType{
@@ -112,35 +117,59 @@ align-items:stretch;
     display: grid;
     grid-template-rows:3fr 1fr 1fr 3fr;
     align-items:center;
-    z-index:3;
     justify-items:center;
     font-size:1.8em;
-    width:422px;
-    height:422px;
-    }
+    width:100%;
+    z-index:3;
+    transition: opacity 200ms linear, z-index 0ms linear 200ms;
+}
 
-    .gameTypeOption{
+#gameIntroWrap{
+    justify-self:stretch;
+}
+#gameIntro{
+    display:none;
+    justify-self:stretch;
+    padding-left:10%;
+}
+
+.gameTypeOption{
     font-size: 26px;
     align-self:center;
+    display:none;
 }
 
 .gameTypeOption:hover {
-cursor:pointer;
+    cursor:pointer;
+}
+
+#introCancel, #introCancel:hover {
+    font-size:15px;
+   cursor:pointer;
+   grid-area:4/1/5/2;
+   align-self:end;
+   margin-bottom:20px;
+   padding:3px 6px 3px 6px;
+   border-radius:5px;
+   opacity:1;
+   border:1px solid white;
+   display:none;
 }
 
 #aiDifficulty{
     display: grid;
     grid-area: 1/1/4/4;
     background-color: black;
-    grid-template-rows:1fr 1fr;
+    grid-template-rows:3fr 1fr 1fr 3fr;
     grid-template-columns:1fr 1fr 1fr;
     align-items:center;
     z-index:-1;
     justify-items:center;
     font-size:2em;
-    width:422px;
-    height:422px;
-    }  
+    width:100%;
+    opacity:0;
+    transition:opacity 200ms linear 200ms, z-index 200ms linear 200ms;
+}  
 
 #difficultyTitleSelect {
     grid-area:1/1/2/4;
@@ -148,44 +177,47 @@ cursor:pointer;
 
 .difficultyIcon {
     font-size:22px;
-    align-self:start;
+    align-self:center;
 }
 .difficultyIcon:hover{
     cursor: pointer;
-    }
+}
 
 #humanGame{
-grid-area:2/1/3/2
+grid-area:3/1/4/2;
 }
 
 #aiGame{
-    grid-area:3/1/4/2
+grid-area:2/1/3/2;
 }
 
-
-
-
-
-
 #selector{
-grid-area: 1/1/4/4;
-background-color: black;
-z-index:-1;
-display:grid;
-grid-template-rows: repeat(2, 1fr);
-grid-template-columns:repeat(4, 1fr);
-grid-template-areas:
-"selectorTitle selectorTitle selectorTitle selectorTitle"
-"borderLeft selectorLeft selectorRight borderRight";
-justify-items:center;
-font-size:2em;
-width:422px;
-height:422px;
+    grid-area: 1/1/4/4;
+    background-color: black;
+    z-index:-1;
+    opacity:0;
+    display:grid;
+    grid-template-rows: 3fr 1fr 3fr;
+    grid-template-columns:repeat(4, 1fr);
+    grid-template-areas:
+    "selectorTitle selectorTitle selectorTitle selectorTitle"
+    "borderLeft selectorLeft selectorRight borderRight";
+    justify-items:center;
+    font-size:2em;
+    width:100%;
+    transition:opacity 200ms linear 200ms, z-index 200ms linear 200ms;
 }
 
 #selectorTitle {
     grid-area:selectorTitle;
     align-self:center;
+    padding: 0 20px 0 20px;
+    text-align: center;
+}
+
+.selectIcon{
+    font-size:2em;
+    font-family:'Century Gothic', sans-serif;
 }
 
 .selectIcon:hover {
@@ -196,15 +228,14 @@ height:422px;
     grid-area:selectorLeft;
 }
 
-
-
 #OSelect {
     grid-area:selectorRight;
+
 }
 
 svg {
-    width:136px;
-    height:136px;
+    width:100%;
+    height:100%;
    /* border:1px solid white;*/
     background-color: black;
 }
@@ -220,11 +251,16 @@ svg {
 #svg9{grid-area:c3;}
 
 #reset{
-    margin-top:20px;
+    font-size: 15px;
+    height:auto;
+    align-self:center;
+    grid-area:3/1/4/2;
     visibility: hidden;
-    border:2px solid white;
+    opacity:0;
+    border:1px solid white;
     padding:3px 6px 3px 6px;
     border-radius:5px;
+    transition:opacity 200ms linear;
 }
 
 #reset:hover{
