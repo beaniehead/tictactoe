@@ -1,6 +1,5 @@
 //comment code
 //tidy and combine
-//have an edit difficulty level? either by changing when the ai switches from preferences to calculating moves or another method - could also change the preferences so the ai plays a weaker first move (or two) that can be beaten
 
 $(document).ready(function () {
   var count = 0;
@@ -13,9 +12,9 @@ $(document).ready(function () {
   //X Path end point
   var large = $("#svg1").width() / (15 / 13);
   //SVG X Path HTML
-  var pathX = '<path d="M ' + small + ' ' + small + ' L ' + large + ' ' + large + ' M ' + large + ' ' + small + ' L ' + small + ' ' + large + ' z" stroke="white" stroke-width="4" />';
+  var pathX = '<path d="M ' + small + ' ' + small + ' L ' + large + ' ' + large + ' M ' + large + ' ' + small + ' L ' + small + ' ' + large + ' z" stroke="white" stroke-width="10" />';
   //SGV O Path HTML
-  var pathO = '<circle cx="50%" cy="50%" r="35%" stroke="white" stroke-width="4" fill="none" />';
+  var pathO = '<circle cx="50%" cy="50%" r="35%" stroke="white" stroke-width="10" fill="none" />';
   var testSquare;
   var boardState = [];
   var squares = $("#gameBoard").children("svg");
@@ -34,32 +33,33 @@ $(document).ready(function () {
   $(".gameTypeOption").click(function () {
     if ($(this).attr("id") == "humanGame") {
       $("#game").addClass("humans");
+      $("#difficultyTitle").html("<h3>- PvP -</h3>");
     }
     if ($(this).attr("id") == "aiGame") {
       $("#game").addClass("ai");
-      $('#aiDifficulty').css("z-index","4");
+      $('#aiDifficulty').css("z-index", "4");
     }
     $("#gameType").css("z-index", "-1");
     $("#selector").css("z-index", "3");
-    $("#reset").css("visibility","visible");
+    $("#reset").css("visibility", "visible");
   })
-//choose AI difficulty 
-$(".difficultyIcon").click(function () {
-  if ($(this).attr("id") == "easy") {
-    difficultyRating = 3;
-    difficultySetting = "Easy";
-  }
-  if ($(this).attr("id") == "medium") {
-    difficultyRating = 6;
-    difficultySetting = "Medium";
-  }
-  if ($(this).attr("id") == "hard") {
-    difficultyRating = 10;
-    difficultySetting = "Hard";
-  }
-  $("#difficultyTitle").html("<h3>-"+difficultySetting+"-</h3>")
-  $('#aiDifficulty').css("z-index","-1");
-})
+  //choose AI difficulty 
+  $(".difficultyIcon").click(function () {
+    if ($(this).attr("id") == "easy") {
+      difficultyRating = 3;
+      difficultySetting = "Easy";
+    }
+    if ($(this).attr("id") == "medium") {
+      difficultyRating = 6;
+      difficultySetting = "Medium";
+    }
+    if ($(this).attr("id") == "hard") {
+      difficultyRating = 10;
+      difficultySetting = "Hard";
+    }
+    $("#difficultyTitle").html("<h3>- " + difficultySetting + " -</h3>");
+    $('#aiDifficulty').css("z-index", "-1");
+  })
 
   //selector for player one to pick side and start game
   $(".selectIcon").click(function () {
@@ -82,7 +82,15 @@ $(".difficultyIcon").click(function () {
       $("#turnIndicatorP1").addClass("invisible");
     }
 
-    $("#scores").css("visibility", "visible");
+    $("#scores").css({
+      "visibility":"visible",
+      "opacity":"1"
+    });
+    
+    $("#header").css({
+      "visibility":"hidden",
+      "opacity":"0"
+    });
     //playing first AI move if player 1 selects O
     aiFirstMove();
   });
@@ -150,7 +158,6 @@ $(".difficultyIcon").click(function () {
           if (winner === false) {
             setTimeout(function () {
               var difficultyPercent = Math.floor((Math.random() * 10) + 1);
-              console.log(difficultyPercent);
               //setting difficulty - generated a number between 1 and 10, and then assign a chance that the ai will just make a random move instead of a calculated move
               if (difficultyPercent <= difficultyRating) {
                 testCount = 0;
@@ -160,8 +167,7 @@ $(".difficultyIcon").click(function () {
 
               //loop through ai preference list and then place move in first available square
               if (count < 3) {
-                console.log(difficultySetting);
-                if(difficultySetting == "Easy"){
+                if (difficultySetting == "Easy") {
                   for (i = 9; i >= 1; i--) {
                     testSquare = preferences[i];
                     if ($(testSquare).hasClass("unplayed")) {

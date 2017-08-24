@@ -3,40 +3,42 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Tic Tac Toe</title>
+    <title>TIC TAC TOE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="scripts.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
 </head>
 
 <body>
     <div id="main">
         <div id="header">
             <h1>Tic Tac Toe</h1>
-            <span id="difficultyTitle"></span>
         </div>
         <div id="scores">
-            <p>Scores</p>
-            <div class="singlePlayerScore" id="player1Score"><span class="turnIndicator" id="turnIndicatorP1"><i id="playerIndicator1" class="fa fa-arrow-right"></i></span>
-                <span class="playerScoreText">Player 1: </span><span id="pP1s">0</span><span id="playerIconP1"></span>
+            <div id="scoresTitle">
+            <span id="difficultyTitle"></span>
+                <p style="text-decoration:underline">Scores</p>
             </div>
-
+            <div class="singlePlayerScore" id="player1Score"><span class="turnIndicator" id="turnIndicatorP1"><i id="playerIndicator1" class="fa fa-arrow-right"></i></span>
+                <span class="playerScoreText">Player 1:&nbsp;</span><span id="pP1s">0</span><span id="playerIconP1"></span>
+            </div>
             <div class="singlePlayerScore" id="player2Score"><span class="turnIndicator" id="turnIndicatorP2"><i id="playerIndicator2" class="fa fa-arrow-right"></i></span>
-                <span class="playerScoreText">Player 2: </span><span id="pP2s">0</span><span id="playerIconP2"></span>
+                <span class="playerScoreText">Player 2:&nbsp;</span><span id="pP2s">0</span><span id="playerIconP2"></span>
             </div>
         </div>
-        <span id="player" class="X"></span>
         <div id="game">
             <div id="gameBoard">
                 <div id="gameType">
+                    <div id="gameIntro">Shall we play a game?</div>
                     <div id="humanGame" class="gameTypeOption">Human vs. Human</div>
                     <div id="aiGame" class="gameTypeOption">Human vs. Computer</div>
                 </div>
                 <div id="aiDifficulty">
-                    <div id="difficultyTitle">Select difficulty</div>
+                    <div id="difficultyTitleSelect">Select difficulty</div>
                     <div id="easy" class="difficultyIcon">Easy</div>
                     <div id="medium" class="difficultyIcon">Medium</div>
                     <div id="hard" class="difficultyIcon">Hard</div>
@@ -57,8 +59,9 @@
                 <svg class="unplayed" id="svg9"></svg>
             </div>
         </div>
-        <button id="reset">Reset all</button>
-        
+        <span id="reset">Reset all</span>
+
+        <span id="player" class="X"></span>
     </div>
 </body>
 
