@@ -30,18 +30,18 @@ $(document).ready(function () {
   var boardRatio = 0.92;
 
   if (fullHeight > fullWidth) {
-    if (fullWidth * boardRatio > 650){
+    if (fullWidth * boardRatio > 650) {
       $("#main").width("600px");
-    } else{
+    } else {
       $("#main").width(fullWidth * boardRatio + "px");
     }
 
   }
   if (fullWidth >= fullHeight) {
-    if(fullHeight * boardRatio > 650){
+    if (fullHeight * boardRatio > 650) {
 
       $("#main").width("600px");
-    }else {
+    } else {
 
       $("#main").width(fullHeight * boardRatio + "px");
     }
@@ -62,9 +62,10 @@ $(document).ready(function () {
   $("#gameIntro").css("font-size", fontSize);
   $("#cursor").css("font-size", fontSize);
   $(".gameTypeOption").css("font-size", fontSizeMinor);
-$("#difficultyTitleSelect").css("font-size", fontSize);
-$(".difficultyIcon").css("font-size", fontSizeMinor);
-$("#selectorTitle").css("font-size", fontSizeMinor);
+  $("#difficultyTitleSelect").css("font-size", fontSize);
+  $(".difficultyIcon").css("font-size", fontSizeMinor);
+  $("#selectorTitle").css("font-size", fontSizeMinor);
+  $(".selectIcon").css("font-size", (boardWidth / 5)+"px");
   //X Path start point
   var small = $("#svg1").width() / (15 / 2);
   //X Path end point
@@ -539,7 +540,7 @@ $("#selectorTitle").css("font-size", fontSizeMinor);
     if (winner === true) {
       if (lastMove == P1) {
         $("#gameBoard").prepend("<div id='gameEnd'><h1>Well done!<br/>Player 1 wins!</h1></div>")
-        $("#gameEnd").css("font-size",fontSizeMinor);
+        $("#gameEnd").css("font-size", fontSizeMinor);
         var scoreToUpdate = Number($("#pP1s").html());
         scoreToUpdate += 1;
         $("#pP1s").html(scoreToUpdate);
@@ -547,10 +548,10 @@ $("#selectorTitle").css("font-size", fontSizeMinor);
       if (lastMove == P2) {
         if ($("#game").attr("class") == "ai") {
           $("#gameBoard").prepend("<div id='gameEnd'><h1>The Computer Wins!</h1></div>")
-          $("#gameEnd").css("font-size",fontSizeMinor);
+          $("#gameEnd").css("font-size", fontSizeMinor);
         } else if ($("#game").attr("class") == "humans") {
           $("#gameBoard").prepend("<div id='gameEnd'><h1>Well done!<br/>Player 2 wins!</h1></div>")
-          $("#gameEnd").css("font-size",fontSizeMinor);
+          $("#gameEnd").css("font-size", fontSizeMinor);
         }
         var scoreToUpdate = Number($("#pP2s").html());
         scoreToUpdate += 1;
