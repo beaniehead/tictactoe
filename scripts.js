@@ -46,7 +46,7 @@ $(document).ready(function () {
       $("#main").width(fullHeight * boardRatio + "px");
     }
   }
-
+  $("#main").css("display","grid");
   var boardWidth = ($("#main").width());
   //initial resizsing and font changing depening on screen dimensions
   $("#game").height(boardWidth + "px").width(boardWidth + "px");
