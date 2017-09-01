@@ -28,6 +28,7 @@ $(document).ready(function () {
   //size of game board relative to height or width (whichever is smaller)
   var boardRatio = 0.92; //max width or height of board on smaller screens
   var cornerprefs = [];
+  var draw = 0; // counts number of draws
   if (fullHeight > fullWidth) {
     if (fullWidth * boardRatio > 650) {
       $("#main").width("600px");
@@ -606,13 +607,16 @@ $(document).ready(function () {
     }
     //check for a draw
     if (count == 9 && winner != true) {
+      draw ++;
       winner = false;
+
       gameOver();
     }
   }
   //prevents further play when one side has won
   function gameOver() {
     if (winner === true) {
+      draw = 0;
       if (lastMove == P1) {
         if ($("#game").attr("class") == "ai") {
           $("#gameBoard").prepend("<div id='gameEnd'><h1>Well done!<br/>You win!</h1></div>")
@@ -652,7 +656,12 @@ $(document).ready(function () {
       });
     }
     if (winner === false) {
-      $("#gameBoard").prepend("<div id='gameEnd'><h1>Draw! No-one wins.</h1></div>")
+      if(draw < 5){
+        $("#gameBoard").prepend("<div id='gameEnd'><h1>Draw! No-one wins.</h1></div>")
+      } else {
+        $("#gameBoard").prepend("<div id='gameEnd'><h1>What a strange game. The only way to win is not to play.</h1></div>")
+      }
+     
       $("#gameEnd").css({
         "display": "none",
         "grid-column": "1 / 4",
@@ -667,11 +676,21 @@ $(document).ready(function () {
         "text-align": "center"
       });
     }
-    $("#gameEnd").fadeIn(600).css({
-      "display": "grid",
-      "align-items": "center",
-      "justify-items": "center"
-    }).delay(2500).fadeOut(600);
+    if(draw < 5){
+      $("#gameEnd").fadeIn(600).css({
+        "display": "grid",
+        "align-items": "center",
+        "justify-items": "center"
+      }).delay(2500).fadeOut(600);
+    } else {
+      $("#gameEnd").fadeIn(600).css({
+        "display": "grid",
+        "align-items": "center",
+        "justify-items": "center"
+      }).delay(4500).fadeOut(600);
+      draw=0;
+    }
+    
     setTimeout(function () {
       for (i = 1; i <= 9; i++) {
         $("#svg" + i).delay(3500).html("").attr("class", "unplayed");
